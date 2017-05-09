@@ -27,7 +27,7 @@ if($conn->connect_errno!=0){//nos muestra el mensaje si ha habido un error a la 
 echo '<h2>Realizado correctamente el alta del nuevo alumno.</h2>';
 
 
-$sql = "INSERT INTO alumno (nombre_alumno, apellidos_alumno, fecha_nacimiento, curso_id) VALUES ('" . $_POST["nombre_alumno"] . "' , '" . $_POST["apellidos_alumno"] . "' , '" . $_POST["fecha_nacimiento"] .  "' , '" . $_POST["curso_id"] .  "')"; 
+$sql = "INSERT INTO alumno (nombre_alumno, apellidos_alumno, fecha_nacimiento, curso_id, foto) VALUES ('" . $_POST["nombre_alumno"] . "' , '" . $_POST["apellidos_alumno"] . "' , '" . $_POST["fecha_nacimiento"] .  "' , '" . $_POST["curso_id"] .  "' , '" . $_FILES["foto"] . "')"; 
 
 // "' , '" . $_FILES["archivo"] [name] .
 //var_dump ($sql);//añadir nuevo alumno a la tabla de la base de datos

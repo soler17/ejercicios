@@ -23,7 +23,7 @@
  dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sab'],
  dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sa'],
  weekHeader: 'Sm',
- dateFormat: 'yy-mm-dd',
+ dateFormat: 'dd-mm-yy',
  firstDay: 1,
  isRTL: false,
  showMonthAfterYear: false,
@@ -44,7 +44,7 @@ $("#calendario").datepicker();
 
 <header>
  <div class="container" style="padding-top: 20px">
-   <h3>Ingresar nuevo alumno:</h3>
+   <h3>Ingresarrrrrrrrr nuevo alumno:</h3>
  </div>
 </header>
 
@@ -55,19 +55,19 @@ $("#calendario").datepicker();
     <div class="form-group row">
       <label class="col-sm-4 col-md-3 col-form-label offset-md-1 offset-1">Nombre alumno:</label>
       <div class="col-10 col-sm-9 col-md-7 col-lg-6 offset-1 offset-md-0">
-        <input type="text" class="form-control" name="nombre_alumno">
+        <input type="text" class="form-control" name="nombre_alumno" required>
       </div>
     </div>
     <div class="form-group row">
       <label class="col-sm-4 col-md-3 col-form-label offset-md-1 offset-1">Apellidos alumno:</label>
       <div class="col-10 col-sm-9 col-md-7 col-lg-6 offset-1 offset-md-0">
-        <input type="text" class="form-control" name="apellidos_alumno">
+        <input type="text" class="form-control" name="apellidos_alumno" required>
       </div>
     </div>
     <div class="form-group row">
       <label class="col-sm-4  col-md-3 col-form-label offset-md-1 offset-1">Fecha de nacimiento: </label>
       <div class="col-10 col-sm-9 col-md-7 col-lg-6 offset-1 offset-md-0">
-        <input type="date" class="form-control" id="calendario" name="fecha_nacimiento" style="cursor:pointer">
+        <input type="date" class="form-control" id="calendario" name="fecha_nacimiento" style="cursor:pointer" required>
       </div>
     </div>
     <div class="form-group row">
