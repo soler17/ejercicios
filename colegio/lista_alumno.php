@@ -73,23 +73,25 @@ foreach ($primeraFila as $elementosPrimeraFila) {
   echo '<td style="text-align:center">' . $elementosPrimeraFila. '</td>';
 }
 echo '</tr>';
-
-
+setlocale (LC_TIME, "es_ES");
+echo strftime("%A %d de %B del %Y");
 while ($fila = $result->fetch_assoc()){ 
   echo '<tr>';
     echo '<td style="text-align:center">' . $fila['id'] . '</td>';
     echo '<td style="text-align:center">' . $fila['nombre_alumno'] . '</td>';
     echo '<td style="text-align:center">' . $fila['apellidos_alumno'] . '</td>';
-    echo '<td style="text-align:center">' . $fila['fecha_nacimiento'] . '</td>';
-    //echo '<td style="text-align:center">' . $fila['foto'] . '</td>';
+    echo '<td style="text-align:center">' . date("d-m-Y", strtotime($fila['fecha_nacimiento'])) . '</td>';
+
+    //echo (string date ( string $format [, int $timestamp = time( d m Y) ] ));
     echo '<td style="text-align:center">' . $fila['curso_id'] . '</td>';
+    echo '<td style="text-align:center">' . $fila['foto'] . '</td>';
   echo '</tr>';
 
 }
 
 
 //var_dump($_FILES);
-//move_uploaded_file($_FILES['archivo'] ['tmp_name'], '/tmp/hola.jpg'); //a la hora de que suban la foto, queremos que se mueva a nuestro servidor
+move_uploaded_file($_FILES['archivo'] ['tmp_name'], '/tmp/hola.jpg'); //a la hora de que suban la foto, queremos que se mueva a nuestro servidor
 //var_dump($_GET);//nos devuelve el nuevo nombre introducido en nuevosalumnos.html
 
 
