@@ -4,8 +4,8 @@
 
 <meta charset="utf-8">
 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <link rel="stylesheet" href="/resources/demos/style.css">
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
@@ -44,7 +44,7 @@ $("#calendario").datepicker();
 
 <header>
  <div class="container" style="padding-top: 20px">
-   <h3>Ingresarrrrrrrrr nuevo alumno:</h3>
+   <h3>Ingresar nuevo alumno:</h3>
  </div>
 </header>
 
@@ -71,28 +71,52 @@ $("#calendario").datepicker();
       </div>
     </div>
     <div class="form-group row">
+      <label class="col-sm-4 col-md-3 col-form-label offset-md-1 offset-1">Nota media:</label>
+      <div class="col-10 col-sm-9 col-md-7 col-lg-6 offset-1 offset-md-0">
+        <input type="text" class="form-control" name="nota_media" required>
+      </div>
+    </div>  
+    <div class="form-group row">
       <label class="col-2 col-sm-2 col-form-label offset-md-1 offset-1">Curso: </label>
 <?php
 
-$conn = new mysqli('localhost','root','ubuntu', "colegio"); 
+//$conn = new mysqli('localhost','root','ubuntu', "colegio"); 
+
+$db = new PDO('mysql:host=localhost;dbname=colegio;charset=utf8','root','ubuntu');//conexion a traves de PDO para visualizar los errores de queries
+$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);//nos muestra los errores de queries
+
+mysqli_set_charset($conn, 'utf8');//linea de codigo para visualizar los caracteres especiales
+
 
 $sql = "SELECT * FROM curso";
-$result = $conn->query($sql);
 
-      echo '<div class="col-10 col-sm-4 col-md-3 col-lg-2 offset-sm-0 offset-md-1 offset-1">';
+try{
+    $st = $db->prepare($sql);
+    $st->execute();
+} catch (PDOException $e) {
+    echo $e->getMessage();
+    return FALSE;
+}
+
+//$result = $db->query($sql);
+
+      echo '<div class="col-10 col-sm-4 col-md-3 col-lg-3 offset-sm-0 offset-md-1 offset-1">';
       echo ' <select class="custom-select " name="curso_id" style="cursor:pointer">';
 
       echo '<option>Seleccione curso</option>';
-      while ($fila = $result->fetch_assoc()){
-
- echo '<option value="' . $fila['id'] .'"> ' . $fila['nombre'] . '</option>';	  
+      //while ($fila = $result->fetch_assoc()){
+while ($fila = $st->fetch(PDO::FETCH_ASSOC)){
+        
+    echo '<option value="' . $fila['id'] .'"> ' . $fila['nombre'] . '</option>';	  
 }
           
 	  
      echo '</select>'; 
    echo '</div>';
-$conn->query($sql);
+//$conn->query($sql);
 
+
+//$db->close();
 ?>
     </div>
     <div class="form-group row">

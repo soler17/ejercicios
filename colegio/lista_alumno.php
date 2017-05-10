@@ -7,7 +7,19 @@
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css">
+    <script src="https://cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"></script>
+    <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/colreorder/1.3.3/js/dataTables.colReorder.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
+    <script src="https://cdn.datatables.net/plug-ins/1.10.15/sorting/datetime-moment.js"></script>
+    
+    <style>
+        #myTable_wrapper{
+            margin-top: 30px;
+        }
+    </style>
+    
 
 </head>
 
@@ -18,33 +30,45 @@
 <h1 style="padding-top:30px">Base de datos de alumnos del instituto</h1>
     
     
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css">
-    <script src="https://cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"></script>
-    <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
-       
+    
+    
 
      <script>
-//$(document).ready(function () {
-//                $('#myTable').DataTable({
-//                    "language": {
-//                        "url": "https://cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
-//                    },
-//                    "lengthMenu": [ 2, 4, 6, 8 ]
-//		 });
-//});
+$(document).ready(function () {
+                $.fn.dataTable.moment( 'DD-MM-YYYY' );
+                $('#myTable').DataTable({
+                    "language": {
+                        "url": "https://cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
+                    },
+                    "lengthMenu": [ 10, 20, 30, 40 ],
+                    "colReorder": true
+		 });
+});
 </script>
 
 
 
 <?php
 
-$conn = new mysqli('localhost','root','ubuntu', "colegio"); //REALIZA LA CONEXION
+$db = new PDO('mysql:host=localhost;dbname=colegio;charset=utf8','root','ubuntu');//conexion a traves de PDO para visualizar los errores de queries
+$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);//nos muestra los errores de queries
+
+//$conn = new mysqli('localhost','root','ubuntu', "colegio"); //REALIZA LA CONEXION con mysqli
 //var_dump ($conn);//nos devuelve la conexion que realiza
 
 
 $sql = "SELECT * FROM alumno";
 //var_dump ($sql);
-$result = $conn->query($sql);
+
+try{
+    $st = $db->prepare($sql);
+    $st->execute();
+} catch (PDOException $e) {
+    echo $e->getMessage();
+    return FALSE;
+}
+
+//$result = $db->query($sql);
 //var_dump ($result);
 
 
@@ -53,8 +77,12 @@ $result = $conn->query($sql);
   //var_dump($result->fetch_assoc());
 //}
 
-echo '<table id="myTable" class="table table-striped">';
-$primeraFila = $result->fetch_assoc();
+setlocale(LC_TIME, 'es_ES.UTF-8');
+echo strftime("%A %d de %B del %Y");
+
+echo '<table id="myTable" class="table table-striped"  style="text-transform: capitalize">';
+//$primeraFila = $result->fetch_assoc();
+ $primeraFila = $st->fetch(PDO::FETCH_ASSOC);
 //var_dump ($primeraFila);//nos devuelve la primera fila de la tabla
 $nombreColumnas = array_keys($primeraFila);
 //var_dump ($nombreColumnas);//nos devuelve el array de la cabecera
@@ -62,29 +90,41 @@ $nombreColumnas = array_keys($primeraFila);
 echo '<thead>';
 echo '<tr>';
 foreach ($nombreColumnas as $nombreColumna) {
-  echo '<th style="text-align:center">' . $nombreColumna. '</th>';
+    if ($nombreColumna == 'curso_id'){
+        echo '<th style="text-align:center">' . str_replace('curso_id', 'curso',   $nombreColumna). '</th>';
+    } else{
+  echo '<th style="text-align:center">' . str_replace('_', ' ',   $nombreColumna). '</th>';
+    }
 }
 echo '</tr>';
 echo '</thead>';
 
 echo '<tbody>';
 echo '<tr>';
-foreach ($primeraFila as $elementosPrimeraFila) {
-  echo '<td style="text-align:center">' . $elementosPrimeraFila. '</td>';
+foreach ($primeraFila as $clave => $elementoPrimeraFila) {
+    
+  if ($clave == 'fecha_nacimiento') { 
+    echo '<td style="text-align:center">' . date("d-m-Y", strtotime($elementoPrimeraFila)) . '</td>';
+    
+} else if ($clave == 'nota_media') {
+        echo '<td style="text-align:right">' . number_format($elementoPrimeraFila['nota_media'], 2, ',', '.') . '</td>';
+} else {
+    echo '<td style="text-align:center">' . $elementoPrimeraFila . '</td>'; 
 }
+} 
 echo '</tr>';
-setlocale (LC_TIME, "es_ES");
-echo strftime("%A %d de %B del %Y");
-while ($fila = $result->fetch_assoc()){ 
+
+
+//while ($fila = $result->fetch_assoc()){ //while con mysqli
+while ($fila = $st->fetch(PDO::FETCH_ASSOC)){
   echo '<tr>';
     echo '<td style="text-align:center">' . $fila['id'] . '</td>';
     echo '<td style="text-align:center">' . $fila['nombre_alumno'] . '</td>';
     echo '<td style="text-align:center">' . $fila['apellidos_alumno'] . '</td>';
     echo '<td style="text-align:center">' . date("d-m-Y", strtotime($fila['fecha_nacimiento'])) . '</td>';
-
-    //echo (string date ( string $format [, int $timestamp = time( d m Y) ] ));
+    echo '<td style="text-align:right">' . number_format($fila['nota_media'], 2, ',', '.') . '</td>';
     echo '<td style="text-align:center">' . $fila['curso_id'] . '</td>';
-    echo '<td style="text-align:center">' . $fila['foto'] . '</td>';
+    //echo '<td style="text-align:center">' . $fila['foto'] . '</td>';
   echo '</tr>';
 
 }
@@ -122,7 +162,7 @@ echo '</table>';
 
 
 
-$conn->close();
+//$db->close();
 
 
 ?>
