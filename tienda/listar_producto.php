@@ -33,18 +33,17 @@ $nombreColumnas = array_keys($primeraFila);
 echo '<thead>';
 echo '<tr>';
 foreach ($nombreColumnas as $nombreColumna) {
-  echo '<th style="text-align:center">' . str_replace('_', ' ',   $nombreColumna). '</th>';
+    echo '<th style="text-align:center">' . str_replace('_', ' ',   $nombreColumna). '</th>';
+    
 }
 echo '</tr>';
 echo '</thead>';
 
 echo '<tbody>';
 echo '<tr>';
-
-foreach ($primeraFila as $clave => $elementoPrimeraFila) {
-    
-}
-
+foreach ($primeraFila as $elementoPrimeraFila) {
+    echo '<td style="text-align:center">' . $elementoPrimeraFila . '</td>'; 
+} 
 echo '</tr>';
 
 
@@ -52,10 +51,26 @@ echo '</tr>';
 while ($fila = $st->fetch(PDO::FETCH_ASSOC)){
   echo '<tr>';
     echo '<td style="text-align:center">' . $fila['id'] . '</td>';
-    echo '<td style="text-align:center">' . $fila['nombre_alumno'] . '</td>';
-    echo '<td style="text-align:center">' . $fila['apellidos_alumno'] . '</td>';
-    echo '<td style="text-align:center">' . date("d-m-Y", strtotime($fila['fecha_nacimiento'])) . '</td>';
-    echo '<td style="text-align:right">' . number_format($fila['nota_media'], 2, ',', '.') . '</td>';
-    echo '<td style="text-align:center">' . $fila['curso_id'] . '</td>';
+    echo '<td style="text-align:center">' . $fila['modelo'] . '</td>';
+    echo '<td style="text-align:center">' . $fila['procesador'] . '</td>';
+    echo '<td style="text-align:center">' . $fila['sistema_operativo'] . '</td>';
+    echo '<td style="text-align:right">' .  $fila['memoria_interna'] . '</td>';
+    echo '<td style="text-align:center">' . $fila['memoria_ram'] . '</td>';
     //echo '<td style="text-align:center">' . $fila['foto'] . '</td>';
   echo '</tr>';
+
+}
+
+
+echo '</tbody>';
+echo '</table>';
+
+
+
+?>
+
+    </div>
+
+
+</body>
+</html>
