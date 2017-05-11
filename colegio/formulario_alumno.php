@@ -80,12 +80,17 @@ $("#calendario").datepicker();
       <label class="col-2 col-sm-2 col-form-label offset-md-1 offset-1">Curso: </label>
 <?php
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+
 //$conn = new mysqli('localhost','root','ubuntu', "colegio"); 
 
 $db = new PDO('mysql:host=localhost;dbname=colegio;charset=utf8','root','ubuntu');//conexion a traves de PDO para visualizar los errores de queries
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);//nos muestra los errores de queries
 
-mysqli_set_charset($conn, 'utf8');//linea de codigo para visualizar los caracteres especiales
+//mysqli_set_charset($conn, 'utf8');//linea de codigo para visualizar los caracteres especiales
 
 
 $sql = "SELECT * FROM curso";
@@ -121,7 +126,7 @@ while ($fila = $st->fetch(PDO::FETCH_ASSOC)){
     </div>
     <div class="form-group row">
       <label class="col-10 col-sm-4 col-md-3 col-form-label offset-1">Seleccione foto alumno: </label>
-      <input type="file" name="archivo" class="form-control-file col-10 col-sm-7 col-md-8 offset-1 offset-sm-0" id="exampleInputFile" aria-describedby="fileHelp" style="margin-top: 15px">
+      <input type="file" name="foto" class="form-control-file col-10 col-sm-7 col-md-8 offset-1 offset-sm-0" id="exampleInputFile" aria-describedby="fileHelp" style="margin-top: 15px">
     </div>
     <div class="form-group"> 
       <input type="submit" class="btn btn-info offset-md-1 offset-1" value="Enviar nuevo alumno" style="cursor:pointer">

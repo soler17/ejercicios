@@ -18,6 +18,9 @@
         #myTable_wrapper{
             margin-top: 30px;
         }
+        img{
+            width: 20%;
+        }
     </style>
     
 
@@ -50,6 +53,11 @@ $(document).ready(function () {
 
 <?php
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+
 $db = new PDO('mysql:host=localhost;dbname=colegio;charset=utf8','root','ubuntu');//conexion a traves de PDO para visualizar los errores de queries
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);//nos muestra los errores de queries
 
@@ -80,7 +88,7 @@ try{
 setlocale(LC_TIME, 'es_ES.UTF-8');
 echo strftime("%A %d de %B del %Y");
 
-echo '<table id="myTable" class="table table-striped"  style="text-transform: capitalize">';
+echo '<table id="myTable" class="display"  style="text-transform: capitalize">';
 //$primeraFila = $result->fetch_assoc();
  $primeraFila = $st->fetch(PDO::FETCH_ASSOC);
 //var_dump ($primeraFila);//nos devuelve la primera fila de la tabla
@@ -102,12 +110,14 @@ echo '</thead>';
 echo '<tbody>';
 echo '<tr>';
 foreach ($primeraFila as $clave => $elementoPrimeraFila) {
-    
   if ($clave == 'fecha_nacimiento') { 
-    echo '<td style="text-align:center">' . date("d-m-Y", strtotime($elementoPrimeraFila)) . '</td>';
-    
+    echo '<td style="text-align:center">' . date("d-m-Y", strtotime($elementoPrimeraFila)) . '</td>';  
 } else if ($clave == 'nota_media') {
-        echo '<td style="text-align:right">' . number_format($elementoPrimeraFila['nota_media'], 2, ',', '.') . '</td>';
+        echo '<td style="text-align:right">' . 
+             $nota_media = number_format($elementoPrimeraFila, 2, ',', '.') . 
+             '</td>';
+} else if ($clave == 'foto_alumno') {
+        echo '<td style="text-align:center"> <img src = "uploads/' . $elementoPrimeraFila . '"> </td>';
 } else {
     echo '<td style="text-align:center">' . $elementoPrimeraFila . '</td>'; 
 }
@@ -124,15 +134,13 @@ while ($fila = $st->fetch(PDO::FETCH_ASSOC)){
     echo '<td style="text-align:center">' . date("d-m-Y", strtotime($fila['fecha_nacimiento'])) . '</td>';
     echo '<td style="text-align:right">' . number_format($fila['nota_media'], 2, ',', '.') . '</td>';
     echo '<td style="text-align:center">' . $fila['curso_id'] . '</td>';
-    //echo '<td style="text-align:center">' . $fila['foto'] . '</td>';
+    echo '<td style="text-align:center"> <img src = "uploads/' . $fila['foto_alumno'] . '"> </td>';
   echo '</tr>';
 
 }
 
 
-//var_dump($_FILES);
-move_uploaded_file($_FILES['archivo'] ['tmp_name'], '/tmp/hola.jpg'); //a la hora de que suban la foto, queremos que se mueva a nuestro servidor
-//var_dump($_GET);//nos devuelve el nuevo nombre introducido en nuevosalumnos.html
+
 
 
 //Añadir dato a array indexado

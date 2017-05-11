@@ -17,22 +17,37 @@
 <div class="container" style="padding-top:50px">
 <?php
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 //$conn = new mysqli('localhost','root','ubuntu', "colegio"); //REALIZA LA CONEXION
 //var_dump ($conn);//nos devuelve la conexion que realiza
 $db = new PDO('mysql:host=localhost;dbname=colegio;charset=utf8','root','ubuntu');//conexion a traves de PDO para visualizar los errores de queries
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);//nos muestra los errores de queries
 
-mysqli_set_charset($conn, 'utf8');//linea de codigo para visualizar los caracteres especiales
+//mysqli_set_charset($conn, 'utf8');//linea de codigo para visualizar los caracteres especiales
 
 
-if($db->connect_errno!=0){//nos muestra el mensaje si ha habido un error a la hora de conectar, por ejemplo porque la contraseña este mal escriba, o que la base de datos no este conectada.
-  echo '¡Conexion con la base de datos fallida!';
-}
+//if($db->connect_errno!=0){//nos muestra el mensaje si ha habido un error a la hora de conectar, por ejemplo porque la contraseña este mal escriba, o que la base de datos no este conectada.
+  //echo '¡Conexion con la base de datos fallida!';
+//}
 
 echo '<h2>Realizado correctamente el alta del nuevo alumno.</h2>';
 
+$nombreArchivo = md5(uniqid());
 
-$sql = "INSERT INTO alumno (nombre_alumno, apellidos_alumno, fecha_nacimiento, nota_media, curso_id) VALUES ('" . $_POST["nombre_alumno"] . "' , '" . $_POST["apellidos_alumno"] . "' , '" . date("Y-m-d", strtotime($_POST["fecha_nacimiento"])) .  "' , '" . str_replace(',', '.', $_POST["nota_media"]) . "' , '" . $_POST["curso_id"] . "')"; 
+//var_dump($_FILES);
+move_uploaded_file($_FILES['foto'] ['tmp_name'], 'uploads/'. $nombreArchivo . '.jpg');//a la hora de que suban la foto, queremos que se mueva a nuestro servidor
+//var_dump($_GET);//nos devuelve el nuevo nombre introducido en nuevosalumnos.html
+
+$sql = "INSERT INTO alumno (nombre_alumno, apellidos_alumno, fecha_nacimiento, nota_media, curso_id, foto_alumno)
+        VALUES ('" . $_POST["nombre_alumno"] . "' ,
+        '" . $_POST["apellidos_alumno"] . "' ,
+        '" . date("Y-m-d", strtotime($_POST["fecha_nacimiento"])) .  "' ,
+        '" . str_replace(',', '.', $_POST["nota_media"]) . "' ,  
+        '" . $_POST["curso_id"] . "' , 
+       '" . $nombreArchivo . '.jpg'."')"; 
 
 try{
     $st = $db->prepare($sql);
