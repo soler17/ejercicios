@@ -18,10 +18,19 @@
     
 <?php
 
-$db = new PDO('mysql:host=localhost;dbname=colegio;charset=utf8','root','ubuntu');//conexion a traves de PDO para visualizar los errores de queries
+$db = new PDO('mysql:host=localhost;dbname=tienda;charset=utf8','root','ubuntu');//conexion a traves de PDO para visualizar los errores de queries
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);//nos muestra los errores de queries
 
 $sql = "SELECT * FROM producto";
+
+try{
+    $st = $db->prepare($sql);
+    $st->execute();
+} catch (PDOException $e) {
+    echo $e->getMessage();
+    return FALSE;
+}
+
 
 echo '<table id="myTable" class="table table-striped"  style="text-transform: capitalize">';
 //$primeraFila = $result->fetch_assoc();
@@ -41,7 +50,7 @@ echo '</thead>';
 
 echo '<tbody>';
 echo '<tr>';
-foreach ($primeraFila as $elementoPrimeraFila) {
+foreach ($primeraFila as $clave => $elementoPrimeraFila) {
     echo '<td style="text-align:center">' . $elementoPrimeraFila . '</td>'; 
 } 
 echo '</tr>';
@@ -51,12 +60,12 @@ echo '</tr>';
 while ($fila = $st->fetch(PDO::FETCH_ASSOC)){
   echo '<tr>';
     echo '<td style="text-align:center">' . $fila['id'] . '</td>';
+    echo '<td style="text-align:center">' . $fila['marca'] . '</td>';
     echo '<td style="text-align:center">' . $fila['modelo'] . '</td>';
     echo '<td style="text-align:center">' . $fila['procesador'] . '</td>';
     echo '<td style="text-align:center">' . $fila['sistema_operativo'] . '</td>';
     echo '<td style="text-align:right">' .  $fila['memoria_interna'] . '</td>';
     echo '<td style="text-align:center">' . $fila['memoria_ram'] . '</td>';
-    //echo '<td style="text-align:center">' . $fila['foto'] . '</td>';
   echo '</tr>';
 
 }
