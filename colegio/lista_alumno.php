@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css">
     <script src="https://cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"></script>
     <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js"></script>
     <script src="https://cdn.datatables.net/colreorder/1.3.3/js/dataTables.colReorder.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
     <script src="https://cdn.datatables.net/plug-ins/1.10.15/sorting/datetime-moment.js"></script>
@@ -19,7 +20,7 @@
             margin-top: 30px;
         }
         img{
-            width: 20%;
+            width: 80px;
         }
     </style>
     
@@ -88,7 +89,7 @@ try{
 setlocale(LC_TIME, 'es_ES.UTF-8');
 echo strftime("%A %d de %B del %Y");
 
-echo '<table id="myTable" class="display"  style="text-transform: capitalize">';
+echo '<table id="myTable" class="display compact" cellspacing="0" width="100%"  >';
 //$primeraFila = $result->fetch_assoc();
  $primeraFila = $st->fetch(PDO::FETCH_ASSOC);
 //var_dump ($primeraFila);//nos devuelve la primera fila de la tabla
@@ -101,7 +102,7 @@ foreach ($nombreColumnas as $nombreColumna) {
     if ($nombreColumna == 'curso_id'){
         echo '<th style="text-align:center">' . str_replace('curso_id', 'curso',   $nombreColumna). '</th>';
     } else{
-  echo '<th style="text-align:center">' . str_replace('_', ' ',   $nombreColumna). '</th>';
+  echo '<th style="text-align:center; text-transform: capitalize"">' . str_replace('_', ' ',   $nombreColumna). '</th>';
     }
 }
 echo '</tr>';
