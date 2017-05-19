@@ -14,6 +14,7 @@
     <script src="https://cdn.datatables.net/colreorder/1.3.3/js/dataTables.colReorder.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
     <script src="https://cdn.datatables.net/plug-ins/1.10.15/sorting/datetime-moment.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     
     <style>
         #myTable_wrapper{
@@ -44,7 +45,7 @@ $(document).ready(function () {
                     "language": {
                         "url": "https://cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
                     },
-                    "lengthMenu": [ 10, 20, 30, 40 ],
+                    "lengthMenu": [ 2, 20, 30, 40 ],
                     "colReorder": true
 		 });
 });
@@ -97,45 +98,52 @@ $nombreColumnas = array_keys($primeraFila);
 //var_dump ($nombreColumnas);//nos devuelve el array de la cabecera
 
 echo '<thead>';
-echo '<tr>';
-foreach ($nombreColumnas as $nombreColumna) {
-    if ($nombreColumna == 'curso_id'){
-        echo '<th style="text-align:center">' . str_replace('curso_id', 'curso',   $nombreColumna). '</th>';
-    } else{
-  echo '<th style="text-align:center; text-transform: capitalize"">' . str_replace('_', ' ',   $nombreColumna). '</th>';
+    echo '<tr>';
+    foreach ($nombreColumnas as $nombreColumna) {
+        if ($nombreColumna == 'curso_id'){
+            echo '<th style="text-align:center">' . str_replace('curso_id', 'curso',   $nombreColumna). '</th>';
+        } else{
+            echo '<th style="text-align:center; text-transform: capitalize">' . str_replace('_', ' ',   $nombreColumna). '</th>';
+        }
     }
-}
-echo '</tr>';
+    echo '<th>Acciones</th>';
+    echo '</tr>';
 echo '</thead>';
 
 echo '<tbody>';
-echo '<tr>';
-foreach ($primeraFila as $clave => $elementoPrimeraFila) {
-  if ($clave == 'fecha_nacimiento') { 
-    echo '<td style="text-align:center">' . date("d-m-Y", strtotime($elementoPrimeraFila)) . '</td>';  
-} else if ($clave == 'nota_media') {
-        echo '<td style="text-align:right">' . 
-             $nota_media = number_format($elementoPrimeraFila, 2, ',', '.') . 
-             '</td>';
-} else if ($clave == 'foto_alumno') {
-        echo '<td style="text-align:center"> <img src = "uploads/' . $elementoPrimeraFila . '"> </td>';
-} else {
-    echo '<td style="text-align:center">' . $elementoPrimeraFila . '</td>'; 
-}
-} 
-echo '</tr>';
+    echo '<tr>';
+    foreach ($primeraFila as $clave => $elementoPrimeraFila) {
+        if ($clave == 'fecha_nacimiento') { 
+            echo '<td style="text-align:center">' . date("d-m-Y", strtotime($elementoPrimeraFila)) . '</td>';  
+        } else if ($clave == 'nota_media') {
+            echo '<td style="text-align:right">' . 
+            $nota_media = number_format($elementoPrimeraFila, 2, ',', '.') . 
+            '</td>';
+        } else if ($clave == 'foto_alumno') {
+            echo '<td style="text-align:center"> <img src = "uploads/' . $elementoPrimeraFila . '"> </td>';
+        } else {    
+            echo '<td style="text-align:center">' . $elementoPrimeraFila . '</td>';
+        }
+    }
+    echo '<td style="text-align:center"><a href="editar_alumno.php?id=' . $primeraFila['id'] . '"<i class="fa fa-pencil" aria-hidden="true">Editar</a>';
+    echo '<br>';
+    echo '<a href="editar_alumno.php"<i class="fa fa-trash" aria-hidden="true"></i>Eliminar</a></td>';
+    echo '</tr>';
 
 
 //while ($fila = $result->fetch_assoc()){ //while con mysqli
 while ($fila = $st->fetch(PDO::FETCH_ASSOC)){
   echo '<tr>';
-    echo '<td style="text-align:center">' . $fila['id'] . '</td>';
-    echo '<td style="text-align:center">' . $fila['nombre_alumno'] . '</td>';
-    echo '<td style="text-align:center">' . $fila['apellidos_alumno'] . '</td>';
-    echo '<td style="text-align:center">' . date("d-m-Y", strtotime($fila['fecha_nacimiento'])) . '</td>';
-    echo '<td style="text-align:right">' . number_format($fila['nota_media'], 2, ',', '.') . '</td>';
-    echo '<td style="text-align:center">' . $fila['curso_id'] . '</td>';
-    echo '<td style="text-align:center"> <img src = "uploads/' . $fila['foto_alumno'] . '"> </td>';
+    echo '<td style="text-align:center">' .$fila['id']. '</td>';
+    echo '<td style="text-align:center">' .$fila['nombre_alumno']. '</td>';
+    echo '<td style="text-align:center">' .$fila['apellidos_alumno']. '</td>';
+    echo '<td style="text-align:center">' .date("d-m-Y", strtotime($fila['fecha_nacimiento'])). '</td>';
+    echo '<td style="text-align:right">' .number_format($fila['nota_media'], 2, ',', '.'). '</td>';
+    echo '<td style="text-align:center">' .$fila['curso_id']. '</td>';
+    echo '<td style="text-align:center"><img src = "uploads/' .$fila['foto_alumno']. '"> </td>';
+    echo '<td style="text-align:center"><a href="editar_alumno.php?id=' .$fila['id']. '"<i class="fa fa-pencil" aria-hidden="true"></i>Editar</a>';
+    echo '<br>';
+    echo '<a href="eliminar_alumno.php?id=' .$fila['id'].'"<i class="fa fa-trash" aria-hidden="true"></i>Eliminar</a></td>';
   echo '</tr>';
 
 }
