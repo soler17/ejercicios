@@ -1,0 +1,113 @@
+<html>
+  <head>
+    <title>Formulario de contacto</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <style>
+      form{
+        padding-top: 20px;
+       
+      }
+      h1{
+          padding-top: 20px;
+      }
+      label{
+          font-weight: bold;
+      }
+      #enviar{
+          font-weight: bold;
+          cursor:pointer;
+      }
+      .fa{
+          font-weight: bold;
+      }      
+      .spinner{
+          display: none;
+      }
+      .alert{
+          display: none;
+      }
+    </style>
+
+  </head>
+
+  <body>
+    
+    <div class="container">
+      <h1>Formulario de contacto</h1>
+      <form action="#" method="post" enctype="multipart/form-data">
+        <div class="form-group row">
+          <div class="col-md-6"> 
+            <div class="form-group">
+              <label for="formGroupExampleInput">Nombre</label>
+              <input type="text" id="nombre" required="required" name="nombre" class="form-control">
+            </div>
+            <div class="form-group">
+              <label for="formGroupExampleInput2">Apellidos</label>
+              <input type="text" id="apellidos" required="required" name="apellidos" class="form-control">
+            </div>
+            <div class="form-group">
+              <label for="formGroupExampleInput">Email</label>
+              <input type="text" id="email" required="required" name="email" class="form-control">
+            </div>
+            <div class="form-group">
+              <label for="formGroupExampleInput2">Teléfono</label>
+              <input type="text" id="telefono" required="required" name="telefono" class="form-control">
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="exampleTextarea">Escribe el mensaje</label>
+              <textarea class="form-control" id="mensaje" required="required" name="mensaje" placeholder="Escribe el mensaje" rows="11"></textarea>
+            </div>
+            <button type="submit" id="enviar" value="Enviar formulario" class="btn btn-primary">Enviar &nbsp;<i class="fa fa-envelope-o" aria-hidden="true"></i></button>
+            <img src="ajax-loader.gif" class="spinner" alt="spinner">
+            <span class="mensaje">  
+              <span class="alert alert-success" role="alert">Tu mensaje se ha enviado correctamente.</span>
+              <span class="alert alert-danger" role="alert">Ha habido un error en el formulario.</span>
+            </span>  
+          </div>  
+        </div>  
+      </form>
+    </div>
+          
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" crossorigin="anonymous"></script>
+      <script>
+      
+      $("#enviar").on('click',function(event){
+        //alert("Se ha enviado correctamente.");
+        event.preventDefault();
+        $('img').show();
+        
+        var formulario_serializado = $('form').serialize(); //manera mas rapida de recuperar el valor de los campos label y type: text
+        
+        //var valor_nombre = $('#nombre').val(); //recuperamos el valor de la casilla "type:text"
+        //var valor_apellidos = $('#apellidos').val(); //recuperamos el valor de la casilla "type:text"
+        //var valor_email = $('#email').val(); //recuperamos el valor de la casilla "type:text"
+        //var valor_telefono = $('#telefono').val(); //recuperamos el valor de la casilla "type:text"
+        //var valor_mensaje = $('#mensaje').val(); //recuperamos el valor de la casilla "type:text"
+        $.ajax({
+          url: 'guardar_contacto.php',
+          method: 'POST',
+          data: formulario_serializado,
+          //RECUPERAR CAMPOS Y DATOS A MANO: data: {nombre: valor_nombre, apellidos: valor_apellidos, 
+          //email: valor_email, telefono: valor_telefono, 
+          //mensaje: valor_mensaje}
+          success: function() {
+              $('.alert-success').show();
+              $('img').hide('slow');
+          },
+          error: function() {
+              $('mensaje').text('Ha habido un error en el formulario.')
+          }
+        });
+      });
+      
+    </script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"  crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"  crossorigin="anonymous"></script>
+  </body>
+</html>

@@ -1,0 +1,13 @@
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js" crossorigin="anonymous"></script>
+  
+  <script>
+      $.ajax({
+          url: 'hola_mundo_respuesta.php',
+          method: 'POST',
+          data: {id:4},
+          success: function(respuesta) {
+              alert(respuesta);
+          }
+      });
+  </script>
+  
