@@ -4,6 +4,8 @@
 <head>
 
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Base de datos del Instituto</title>
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
@@ -71,7 +73,8 @@
         setlocale(LC_TIME, 'es_ES.UTF-8');
         echo strftime("%A %d de %B del %Y");
         
-        $db = new PDO('mysql:host=localhost;dbname=colegio;charset=utf8','root','ubuntu');//conexion a traves de PDO para visualizar los errores de queries
+        $db = new PDO('mysql:host=mysql.hostinger.es;dbname=u133033580_cole;charset=utf8','u133033580_ubu','123456');//conexion a la BdD REMOTA
+//$db = new PDO('mysql:host=localhost;dbname=colegio;charset=utf8','root','ubuntu');//conexion a traves de PDO para visualizar los errores de queries y conexion a la BdD LOCAL
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);//nos muestra los errores de queries
         $sql = "SELECT COUNT(*) FROM alumno";
         
@@ -130,8 +133,8 @@
                             <a href="lista_alumno_sin_datatables.php?columna_orden= 
                                 <?php $nombreColumna ?> &orden= <?php $ordenEnlace ?> ">
                                 <?php echo str_replace('curso_id', 'curso', $nombreColumna) ?>
-                                <i class="fa fa-caret-up" aria-hidden="true"></i>
-                                <i class="fa fa-caret-down" aria-hidden="true"></i>
+                                <i href="eliminar_alumno.php?id=<?php echo $primeraFila['id'] ?>" class="fa fa-caret-up" aria-hidden="true"></i>
+                                <i href="eliminar_alumno.php?id=<?php echo $primeraFila['id'] ?>"class="fa fa-caret-down" aria-hidden="true"></i>
                             </a>
                        </th>
                     <?php } else { ?>
@@ -139,8 +142,8 @@
                             <a href="lista_alumno_sin_datatables.php?columna_orden=
                                 <?php $nombreColumna ?> &orden= <?php $ordenEnlace ?> ">
                                 <?php echo str_replace('_', ' ', $nombreColumna) ?>
-                                <i class="fa fa-caret-up" aria-hidden="true"></i>
-                                <i class="fa fa-caret-down" aria-hidden="true"></i>
+                                <a href="eliminar_alumno.php?id=<?php echo $primeraFila['id'] ?>"class="fa fa-caret-up" aria-hidden="true"></a>
+                                <a href="eliminar_alumno.php?id=<?php echo $primeraFila['id'] ?>"class="fa fa-caret-down" aria-hidden="true"></a>
                             </a>
                         </th>
                     <?php } ?>
