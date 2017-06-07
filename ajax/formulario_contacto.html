@@ -63,11 +63,12 @@
               <textarea class="form-control" id="mensaje" required="required" name="mensaje" placeholder="Escribe el mensaje" rows="11"></textarea>
             </div>
             <button type="submit" id="enviar" value="Enviar formulario" class="btn btn-primary">Enviar &nbsp;<i class="fa fa-envelope-o" aria-hidden="true"></i></button>
-            <img src="ajax-loader.gif" class="spinner" alt="spinner">
+            
             <span class="mensaje">  
               <span class="alert alert-success" role="alert">Tu mensaje se ha enviado correctamente.</span>
               <span class="alert alert-danger" role="alert">Ha habido un error en el formulario.</span>
             </span>  
+            <img src="ajax-loader.gif" class="spinner" alt="spinner">
           </div>  
         </div>  
       </form>
@@ -97,7 +98,7 @@
           //mensaje: valor_mensaje}
           success: function() {
               $('.alert-success').show();
-              $('img').hide('slow');
+              $('img').hide();
           },
           error: function() {
               $('mensaje').text('Ha habido un error en el formulario.')
