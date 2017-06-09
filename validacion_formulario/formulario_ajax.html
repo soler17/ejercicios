@@ -1,0 +1,108 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Formulario de validación</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+      .container{
+        padding-top: 50px;
+      }
+      h1{
+          padding-bottom: 20px;
+      }
+      label{
+          font-weight: bold;
+      }
+      .asterisco{
+        color: red;
+        padding-left: 5px;
+      }
+      #enviar{
+          font-weight: bold;
+          cursor:pointer;
+      }
+      .fa{
+          font-weight: bold;
+      }
+      .opcional{
+          font-size: 12px;
+          font-style: italic;
+          font-weight: normal
+      }
+      .error{
+          color: red;
+          font-style: italic;
+          font-size: 14px;
+      }
+      .alert-success{
+          display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+        <h1>Nuevo formulario</h1>  
+      <form method="POST">
+        <div class="form-group">
+          <div class="form-group">
+            <label class="col-md-2">Nombre:<span class="asterisco">*</span></label>
+            <input type="text" name="nombre" class="col-md-4">
+            <span class="error nombre"></span>
+          </div>
+          <div class="form-group">
+            <label class="col-md-2">Apellidos:<span class="asterisco">*</span></label>
+            <input type="text" name="apellidos" class="col-md-4">
+            <span class="error apellidos"></span>
+          </div>
+          <div class="form-group">
+            <label class="col-md-2">Email:<span class="asterisco">*</span></label>
+            <input type="text" name="email" class="col-md-4">
+            <span class="error"></span>
+          </div>
+          <div class="form-group">
+            <label class="col-md-2">Móvil:<span class="asterisco">*</span></label>
+            <input type="text" name="telefono" class="col-md-4">
+            <span class="error telefono"></span>
+          </div>
+            <div class="form-group">
+            <label class="col-md-2">Sitio web<span class="opcional">(opcional):</span></label>
+            <input type="text" name="web" class="col-md-4">
+          </div>  
+          <button type="submit" id="enviar" value="Enviar formulario" class="btn btn-primary">Enviar &nbsp;
+            <i class="fa fa-envelope-o" aria-hidden="true"></i>
+          </button><span class="alert alert-success mensaje" role="alert"></span>
+        </div>
+      </form>
+    </div>
+      
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" crossorigin="anonymous"></script>  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"  crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"  crossorigin="anonymous"></script>
+    <script>
+        $('[type = "submit"]').on('click',function(event){
+        event.preventDefault();
+        var formulario_serializado = $('form').serialize(); //manera mas rapida de recuperar el valor de los campos label y type: text
+        $('.error').empty();
+        $.ajax({
+          url: 'validacion_ajax.php',
+          method: 'POST',
+          data: formulario_serializado,
+          success: function(respuesta) {
+            if (respuesta.length != 0) {
+              $.each(respuesta, function(campo, mensaje_error) {
+                $('.error.' + campo).text(mensaje_error);  
+              });
+            } else {
+                $('.alert-success').show();
+                $('.mensaje').text('Nos pondremos en contacto contigo.');
+            }              
+          }
+        });
+        });
+    </script>
+    
+    
+  </body>
+    
+</html>
